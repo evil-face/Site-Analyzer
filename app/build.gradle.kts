@@ -1,6 +1,10 @@
 plugins {
-    id("java")
+    application
     id("checkstyle")
+}
+
+application {
+    mainClass.set("hexlet.code.App")
 }
 
 group = "hexlet.code"
@@ -17,6 +21,8 @@ tasks.compileJava {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("io.javalin:javalin:5.5.0")
+    implementation("org.slf4j:slf4j-simple:2.0.7")
 }
 
 tasks.test {
