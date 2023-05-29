@@ -32,3 +32,9 @@ tasks.test {
 task("stage") {
     dependsOn("clean", "installDist")
 }
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "hexlet.code.App"
+    }
+}
