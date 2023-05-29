@@ -30,11 +30,15 @@ tasks.test {
 }
 
 task("stage") {
-    dependsOn("clean", "installDist")
+    dependsOn("clean", "installDist", "jar")
 }
 
-tasks.withType<Jar> {
-    manifest {
-        attributes["Main-Class"] = "hexlet.code.App"
-    }
+tasks.jar {
+    manifest.attributes["Main-Class"] = "hexlet.code.App"
+    val dependencies = configurations
+            .runtimeClasspath
+            .get()
+            .map(::zipTree) // OR .map { zipTree(it) }
+    from(dependencies)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
