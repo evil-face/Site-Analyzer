@@ -35,6 +35,7 @@ dependencies {
     implementation("io.ebean:ebean-migration:13.6.2")
 
     implementation("com.h2database:h2:2.1.214")
+    implementation("org.postgresql:postgresql:42.6.0")
 }
 
 tasks.test {
