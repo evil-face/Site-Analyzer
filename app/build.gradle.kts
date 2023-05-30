@@ -1,7 +1,7 @@
 plugins {
     application
     id("checkstyle")
-    id("io.ebean") version "13.6.5"
+    id("io.ebean") version "13.17.4"
 }
 
 application {
@@ -36,6 +36,7 @@ dependencies {
 
     implementation("com.h2database:h2:2.1.214")
     implementation("org.postgresql:postgresql:42.6.0")
+    testImplementation("io.ebean:ebean-platform-all:13.17.4")
 }
 
 tasks.test {
