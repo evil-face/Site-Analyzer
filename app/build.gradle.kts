@@ -38,7 +38,7 @@ dependencies {
 
     implementation("com.h2database:h2:2.1.214")
     implementation("org.postgresql:postgresql:42.6.0")
-//    implementation("io.ebean:ebean-platform-postgres:13.17.4")
+    implementation("io.ebean:ebean-platform-postgres:13.15.0")
 
 }
 
