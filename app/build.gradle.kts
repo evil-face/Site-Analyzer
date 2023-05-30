@@ -45,6 +45,11 @@ task("stage") {
     dependsOn("clean", "installDist", "jar")
 }
 
+tasks.register<JavaExec>("generateMigrations") {
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("hexlet.code.MigrationGenerator")
+}
+
 tasks.jar {
     manifest.attributes["Main-Class"] = "hexlet.code.App"
     val dependencies = configurations
