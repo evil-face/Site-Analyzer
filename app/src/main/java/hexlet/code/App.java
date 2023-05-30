@@ -34,7 +34,7 @@ public class App {
     }
 
     public static void main(String[] args) throws ClassNotFoundException {
-        Class.forName("org.postgresql.Driver");
+//        Class.forName("org.postgresql.Driver");
         Javalin app = getApp();
         app.start(getPort());
 
