@@ -1,6 +1,7 @@
 datasource:
   default: ${APP_ENV}
   dev:
+    driver: org.postgresql.Driver
     username: ""
     password: ""
     url: "jdbc:h2:./database"
