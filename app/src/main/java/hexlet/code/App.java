@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import hexlet.code.query.QUrl;
 import io.ebean.DB;
 import io.javalin.Javalin;
 
