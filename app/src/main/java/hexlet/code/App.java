@@ -1,7 +1,13 @@
 package hexlet.code;
 
+import hexlet.code.controllers.RootController;
 import io.ebean.DB;
 import io.javalin.Javalin;
+import io.javalin.rendering.template.JavalinThymeleaf;
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 public class App {
 
@@ -21,20 +27,41 @@ public class App {
         return getMode().equals(PROD_MODE);
     }
 
+    private static TemplateEngine getTemplateEngine() {
+        TemplateEngine engine = new TemplateEngine();
+        engine.addDialect(new LayoutDialect());
+        engine.addDialect(new Java8TimeDialect());
+
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setPrefix("/templates/");
+        templateResolver.setCharacterEncoding("UTF-8");
+        engine.addTemplateResolver(templateResolver);
+
+        return engine;
+    }
+
+    private static void addRoutes(Javalin app) {
+        app.get("/", RootController.getIndex);
+        app.get("/urls", ctx -> ctx.render("urls.html"));
+    }
+
     public static Javalin getApp() {
         Javalin app = Javalin.create(config -> {
             if (!isProduction()) {
                 config.plugins.enableDevLogging();
             }
+            JavalinThymeleaf.init(getTemplateEngine());
+            config.staticFiles.enableWebjars();
+            config.staticFiles.add("/static");
         });
 
-        app.get("/", ctx -> ctx.result("Hello World"));
+        addRoutes(app);
+        app.before(ctx -> ctx.attribute("ctx", ctx));
 
         return app;
     }
 
-    public static void main(String[] args) throws ClassNotFoundException {
-//        Class.forName("org.postgresql.Driver");
+    public static void main(String[] args) {
         Javalin app = getApp();
         app.start(getPort());
 
