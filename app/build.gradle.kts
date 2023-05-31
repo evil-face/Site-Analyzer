@@ -24,7 +24,12 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     implementation("io.javalin:javalin:5.5.0")
+    implementation("io.javalin:javalin-rendering:5.5.0")
     implementation("org.slf4j:slf4j-simple:2.0.7")
+    implementation("org.thymeleaf:thymeleaf:3.1.1.RELEASE")
+    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.0")
+    implementation("org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE")
+    implementation("org.webjars:bootstrap:5.2.0")
 
     implementation("io.ebean:ebean:13.15.0")
     implementation("io.ebean:ebean-ddl-generator:13.15.0")
@@ -34,7 +39,6 @@ dependencies {
     annotationProcessor("io.ebean:querybean-generator:13.15.0")
     implementation("org.glassfish.jaxb:jaxb-runtime:2.3.5")
     implementation("javax.activation:activation:1.1.1")
-
 
     implementation("com.h2database:h2:2.1.214")
     implementation("org.postgresql:postgresql:42.6.0")
