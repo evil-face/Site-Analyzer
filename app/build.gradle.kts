@@ -26,7 +26,7 @@ dependencies {
     implementation("io.javalin:javalin:5.5.0")
     implementation("io.javalin:javalin-rendering:5.5.0")
     implementation("org.slf4j:slf4j-simple:2.0.7")
-    implementation("org.thymeleaf:thymeleaf:3.1.1.RELEASE")
+    implementation("org.thymeleaf:thymeleaf:3.1.0.RELEASE")
     implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.0.0")
     implementation("org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE")
     implementation("org.webjars:bootstrap:5.2.0")
