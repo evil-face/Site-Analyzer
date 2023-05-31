@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/application.html}">
+<head>
+    <title>
+        Анализатор сайтов
+    </title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container-fluid p-5">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-auto">
+                <h1 class="display-4">Проверьте веб-страницу</h1>
+                <p class="fw-light fs-5">Бесплатно проверяйте сайты на SEO пригодность</p>
+                <form action="/urls" method="post">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input id="url" autofocus type="text" required name="url" aria-label="url"
+                                       class="form-control w-100" autocomplete="off">
+                                <label for="url">Ссылка</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="h-100 btn btn-lg px-sm-5 border border-dark"
+                                    style="background-color: #e3f2fd;">Проверить</button>
+                        </div>
+                    </div>
+                </form>
+                <p class="mt-2 mb-0 text-muted">Пример: https://www.example.com</p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
