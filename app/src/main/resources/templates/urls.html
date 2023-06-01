@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/application.html}">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,18 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Created at</th>
+        </tr>
+        <tr th:each="url : ${urls}">
+            <td th:text="${url.id}">Onions</td>
+            <td th:text="${url.name}">2.41</td>
+            <td th:text="${#temporals.format(url.createdAt, 'dd.MM.yyyy HH:mm')}">yes</td>
+        </tr>
+    </table>
 </section>
 </body>
 </html>
