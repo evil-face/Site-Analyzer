@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/application.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/application.html}">
 <head>
     <title>
         Анализатор сайтов
@@ -12,21 +13,33 @@
             <div class="col-md-10 col-lg-8 mx-auto text-white">
                 <h1 class="display-3">Анализатор страниц</h1>
                 <p class="fw-light fs-5">Бесплатно проверяйте сайты на SEO пригодность</p>
+                <div class="form-container">
                 <form action="/urls" method="post">
                     <div class="row">
-                        <div class="col">
-                            <div class="form-floating">
+                        <div class="col-8">
+                            <div class="form-floating text-black">
                                 <input id="url" autofocus type="text" required name="url" aria-label="url"
                                        class="form-control w-100" autocomplete="off">
                                 <label for="url">Ссылка</label>
                             </div>
+
                         </div>
                         <div class="col-2">
                             <button type="submit" class="h-100 btn btn-lg px-sm-5"
                                     style="background-color: #25ae88;">Проверить</button>
                         </div>
                     </div>
+                    <div class="row justify-content-center">
+                        <div class="col-7 mt-1 alert alert-warning alert-dismissible fade show"
+                             role="alert" th:if="${session.flash}">
+                            <span th:text="${session.flash}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div class="col-4"></div>
+                    </div>
                 </form>
+                </div>
+
                 <p class="mt-2 mb-0 text-muted">Пример: https://www.example.com</p>
             </div>
         </div>
