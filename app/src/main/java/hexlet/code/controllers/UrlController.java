@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 
 public class UrlController implements CrudHandler {
@@ -20,12 +21,36 @@ public class UrlController implements CrudHandler {
     @Override
     public void create(@NotNull Context ctx) {
         String userInput = ctx.formParam("url");
+        Url newUrl = null;
+
         try {
+            if (userInput == null || userInput.isBlank()) {
+                throw new MalformedURLException();
+            }
             URL url = new URL(userInput);
+            newUrl = getNormalisedUrl(url);
         } catch (MalformedURLException e) {
-            ctx.sessionAttribute("flash", "Некорректный URL. Не забудьте про http или https");
-            ctx.render("index.html");
+            ctx.sessionAttribute("flash", "Некорректный URL. Не забудьте указать \"http\" или \"https\"");
+            ctx.attribute("url", userInput);
         }
+
+
+        if (newUrl != null) {
+            Optional<Url> existingUrl = new QUrl().name.eq(newUrl.getName()).findOneOrEmpty();
+
+            if (existingUrl.isPresent()) {
+                ctx.sessionAttribute("flash", "Страница уже существует");
+                ctx.attribute("url", userInput);
+            } else {
+                newUrl.save();
+                ctx.sessionAttribute("flash", "Страница успешно добавлена");
+                getAll(ctx);
+                ctx.consumeSessionAttribute("flash");
+                return;
+            }
+        }
+
+        ctx.render("index.html");
         ctx.consumeSessionAttribute("flash");
     }
 
@@ -49,5 +74,18 @@ public class UrlController implements CrudHandler {
     @Override
     public void update(@NotNull Context ctx, @NotNull String urlID) {
 
+    }
+
+    @NotNull
+    private static Url getNormalisedUrl(URL url) {
+        String normalisedUrl = url.toString();
+
+        normalisedUrl = normalisedUrl.replace(url.getPath(), "");
+        if (normalisedUrl.startsWith("http://www.")
+                || normalisedUrl.startsWith("https://www.")) {
+            normalisedUrl = normalisedUrl.replace("www.", "");
+        }
+
+        return new Url(normalisedUrl);
     }
 }
