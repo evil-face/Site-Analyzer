@@ -61,7 +61,16 @@ public class UrlController implements CrudHandler {
 
     @Override
     public void getAll(@NotNull Context ctx) {
-        List<Url> list = new QUrl().findList();
+        final int urlsPerPage = 10;
+        String pageQuery = ctx.queryParam("page");
+        int pageNum = pageQuery == null ? 1 : Integer.parseInt(pageQuery);
+        ctx.attribute("pageNum", pageNum);
+
+        PagedList<Url> pagedUrls = new QUrl()
+                .setFirstRow((pageNum - 1) * urlsPerPage)
+                .setMaxRows(urlsPerPage)
+                .findPagedList();
+        List<Url> list = pagedUrls.getList();
         ctx.attribute("urls", list);
         ctx.render("urls.html");
     }
