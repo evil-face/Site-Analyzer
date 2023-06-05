@@ -2,8 +2,10 @@ package hexlet.code.controllers;
 
 import hexlet.code.Url;
 import hexlet.code.query.QUrl;
+import io.ebean.PagedList;
 import io.javalin.apibuilder.CrudHandler;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +79,16 @@ public class UrlController implements CrudHandler {
 
     @Override
     public void getOne(@NotNull Context ctx, @NotNull String urlID) {
+        if (!urlID.matches("\\d+")) {
+            ctx.status(HttpStatus.NOT_FOUND).result("String ID must be numeric");
+            return;
+        }
+
+        Url url = new QUrl().id.eq(Integer.parseInt(urlID)).findOne();
+        if (url == null) {
+            ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
+            return;
+        }
 
     }
 
