@@ -90,6 +90,8 @@ public class UrlController implements CrudHandler {
             return;
         }
 
+        ctx.attribute("url", url);
+        ctx.render("url.html");
     }
 
     @Override
