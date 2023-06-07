@@ -2,6 +2,7 @@ plugins {
     application
     id("checkstyle")
     id("io.ebean") version "13.17.4"
+    id("jacoco")
 }
 
 application {
@@ -69,3 +70,10 @@ tasks.register<JavaExec>("generateMigrations") {
 //    from(dependencies)
 //    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 //}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
+}
