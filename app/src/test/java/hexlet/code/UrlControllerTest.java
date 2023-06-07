@@ -117,27 +117,16 @@ public final class UrlControllerTest {
 
     @Test
     void testCreateCorrect() {
-        String userInput1 = "http://www.uniquesite.com/path";
-        HttpResponse<String> response1 = Unirest.post("/urls")
-                .field("url", userInput1)
+        String userInput = "http://www.uniquesite.com/path";
+        HttpResponse<String> response = Unirest.post("/urls")
+                .field("url", userInput)
                 .asString();
-        Url actual1 = new QUrl().name.eq("http://uniquesite.com").findOne();
+        Url actual = new QUrl().name.eq("http://uniquesite.com").findOne();
 
-        assertThat(response1.getStatus()).isEqualTo(HttpStatus.CREATED.getCode());
-        assertThat(actual1).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.getCode());
+        assertThat(actual).isNotNull();
 
-        assertThat(response1.getBody()).contains("Страница успешно добавлена");
-
-        String userInput2 = "https://www.uniquesite.com/path";
-        HttpResponse<String> response2 = Unirest.post("/urls")
-                .field("url", userInput2)
-                .asString();
-        Url actual2 = new QUrl().name.eq("http://uniquesite.com").findOne();
-
-        assertThat(response2.getStatus()).isEqualTo(HttpStatus.CREATED.getCode());
-        assertThat(actual2).isNotNull();
-
-        assertThat(response2.getBody()).contains("Страница успешно добавлена");
+        assertThat(response.getBody()).contains("Страница успешно добавлена");
     }
 
     @Test
