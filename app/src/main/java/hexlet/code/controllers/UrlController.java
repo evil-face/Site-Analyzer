@@ -7,8 +7,6 @@ import io.javalin.apibuilder.CrudHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,10 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class UrlController implements CrudHandler {
-
-    private static final Logger logger = LoggerFactory.getLogger(UrlController.class);
-
+public final class UrlController implements CrudHandler {
     @Override
     public void create(@NotNull Context ctx) {
         String userInput = ctx.formParam("url");
