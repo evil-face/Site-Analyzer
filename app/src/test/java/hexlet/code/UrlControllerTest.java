@@ -18,10 +18,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class UrlControllerTest {
+public final class UrlControllerTest {
     private Transaction transaction;
-    private final static String FIRST_PAGE_EXISTING_URL = "http://yandex.ru";
-    public final static String SECOND_PAGE_EXISTING_URL = "http://secondpage.org";
+    private final String firstPageExistingUrl = "http://yandex.ru";
+    private final String secondPageExistingUrl = "http://secondpage.org";
 
     @BeforeAll
     void beforeAll() {
@@ -62,7 +62,7 @@ public class UrlControllerTest {
                 expectedTwo.getName(),
                 String.valueOf(expectedTwo.getId()));
 
-        assertThat(response.getBody()).doesNotContain(SECOND_PAGE_EXISTING_URL);
+        assertThat(response.getBody()).doesNotContain(secondPageExistingUrl);
     }
 
     @Test
@@ -72,15 +72,15 @@ public class UrlControllerTest {
                 .asString();
         assertThat(response.getStatus()).isEqualTo(200);
 
-        assertThat(response.getBody()).contains(SECOND_PAGE_EXISTING_URL);
+        assertThat(response.getBody()).contains(secondPageExistingUrl);
 
         assertThat(response.getBody()).doesNotContain(
-                FIRST_PAGE_EXISTING_URL);
+                firstPageExistingUrl);
     }
 
     @Test
     void testGetOneCorrect() {
-        Url expected = new QUrl().name.eq(SECOND_PAGE_EXISTING_URL).findOne();
+        Url expected = new QUrl().name.eq(secondPageExistingUrl).findOne();
 
         HttpResponse<String> response = Unirest.get("/urls/" + expected.getId())
                 .asString();
@@ -163,7 +163,7 @@ public class UrlControllerTest {
 
     @Test
     void testCreateExistingEntity() {
-        String userInput = SECOND_PAGE_EXISTING_URL;
+        String userInput = secondPageExistingUrl;
         List<Url> listBefore = new QUrl().findList();
         HttpResponse<String> response = Unirest.post("/urls")
                 .field("url", userInput)
