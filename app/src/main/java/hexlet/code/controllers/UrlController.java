@@ -32,6 +32,7 @@ public class UrlController implements CrudHandler {
             URL url = new URL(userInput);
             newUrl = getNormalisedUrl(url);
         } catch (MalformedURLException e) {
+            ctx.status(HttpStatus.BAD_REQUEST);
             ctx.sessionAttribute("flash", "Некорректный URL. Не забудьте указать \"http\" или \"https\"");
             ctx.attribute("url", userInput);
         }
@@ -45,6 +46,7 @@ public class UrlController implements CrudHandler {
                 ctx.attribute("url", userInput);
             } else {
                 newUrl.save();
+                ctx.status(HttpStatus.CREATED);
                 ctx.sessionAttribute("flash", "Страница успешно добавлена");
                 getAll(ctx);
                 ctx.consumeSessionAttribute("flash");
@@ -80,7 +82,7 @@ public class UrlController implements CrudHandler {
     @Override
     public void getOne(@NotNull Context ctx, @NotNull String urlID) {
         if (!urlID.matches("\\d+")) {
-            ctx.status(HttpStatus.NOT_FOUND).result("String ID must be numeric");
+            ctx.status(HttpStatus.BAD_REQUEST).result("String ID must be numeric");
             return;
         }
 
