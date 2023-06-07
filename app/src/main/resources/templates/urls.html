@@ -6,13 +6,9 @@
         <title>Добавленные сайты</title>
         <style>
             .pagination .page-link {
+                border: 1px solid rgba(255, 255, 255, .25);
                 background: #212529;
                 color: white;
-            }
-
-            .active>.page-link {
-                background: #212529;
-                border-color: white;
             }
         </style>
     </head>
@@ -37,7 +33,7 @@
                             <th scope="row" th:text="${url.id}" class="ps-5"></th>
                             <td><a class="link-light" th:href="@{/urls/{url_id}(url_id=*{url.id})}"
                                    th:text="${url.name}"></a></td>
-                            <td th:text="${#temporals.format(url.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
+                            <td>Заглушка (посл. проверка)</td>
                             <td>Временная заглушка</td>
                         </tr>
                     </tbody>
@@ -50,10 +46,7 @@
                             <a class="page-link"
                                th:href="@{/urls?page={page}(page=${pageNum == 1 ? 1 : pageNum - 1})}">Назад</a>
                         </li>
-                        <li class="page-item active">
-                            <a class="page-link" th:href="@{/urls?page={page}(page=${pageNum})}" th:text="${pageNum}"></a>
-                        </li>
-                        <li class="page-item">
+                        <li class="page-item" style="--bs-border-opacity: .5;">
                             <a class="page-link" th:href="@{/urls?page={page}(page=${pageNum + 1})}">Вперед</a>
                         </li>
                     </ul>
