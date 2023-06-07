@@ -1,0 +1,12 @@
+ebean:
+  test:
+    useDocker: false  # DO NOT USE DOCKER
+    platform: h2 # h2, postgres, mysql, oracle, sqlserver
+    ddlMode: dropCreate # none | dropCreate | migrations | create
+    dbName: test_db
+    h2:
+      username: ""
+      password: ""
+      url: "jdbc:h2:./database"
+  ddl:
+    seedSql: seed.sql
