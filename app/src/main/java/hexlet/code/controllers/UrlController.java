@@ -87,7 +87,9 @@ public final class UrlController implements CrudHandler {
             ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
             return;
         }
+        List<UrlCheck> checks = url.getUrlChecks();
 
+        ctx.attribute("checks", checks);
         ctx.attribute("url", url);
         ctx.render("url.html");
     }
