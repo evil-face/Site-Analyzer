@@ -31,10 +31,18 @@
                     <tbody class="table-group-divider">
                         <tr th:each="url : ${urls}">
                             <th scope="row" th:text="${url.id}" class="ps-5"></th>
-                            <td><a class="link-light" th:href="@{/urls/{url_id}(url_id=*{url.id})}"
-                                   th:text="${url.name}"></a></td>
-                            <td>Заглушка (посл. проверка)</td>
-                            <td>Временная заглушка</td>
+                            <td>
+                                <a class="link-light" th:href="@{/urls/{url_id}(url_id=*{url.id})}"
+                                   th:text="${url.name}"></a>
+                            </td>
+                            <td>
+                                <span th:unless="${url.getLastCheck() == null}"
+                                      th:text="${#temporals.format(url.getLastCheck().createdAt, 'dd.MM.yyyy HH:mm')}"></span>
+                            </td>
+                            <td>
+                                <span th:unless="${url.getLastCheck() == null}"
+                                      th:text="${url.getLastCheck().statusCode}"></span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
