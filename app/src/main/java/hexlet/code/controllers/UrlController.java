@@ -1,7 +1,8 @@
 package hexlet.code.controllers;
 
-import hexlet.code.Url;
-import hexlet.code.query.QUrl;
+import hexlet.code.domain.Url;
+import hexlet.code.domain.UrlCheck;
+import hexlet.code.domain.query.QUrl;
 import io.ebean.PagedList;
 import io.javalin.apibuilder.CrudHandler;
 import io.javalin.http.Context;
