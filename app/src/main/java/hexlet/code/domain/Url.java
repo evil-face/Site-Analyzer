@@ -2,10 +2,15 @@ package hexlet.code;
 
 import io.ebean.Model;
 import io.ebean.annotation.WhenCreated;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.time.Instant;
+import java.util.Comparator;
+import java.util.List;
 
 @Entity
 public final class Url extends Model {
@@ -16,8 +21,17 @@ public final class Url extends Model {
 
     private String name;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "url")
+    private List<UrlCheck> urlChecks;
+
     @WhenCreated
     private Instant createdAt;
+
+    public UrlCheck getLastCheck() {
+        return urlChecks.stream()
+                .max(Comparator.comparing(UrlCheck::getCreatedAt))
+                .orElse(null);
+    }
 
     public Url() {
     }
@@ -49,4 +63,13 @@ public final class Url extends Model {
     public void setCreatedAt(Instant newCreatedAt) {
         this.createdAt = newCreatedAt;
     }
+
+    public List<UrlCheck> getUrlChecks() {
+        return urlChecks;
+    }
+
+    public void setUrlChecks(List<UrlCheck> newUrlChecks) {
+        this.urlChecks = newUrlChecks;
+    }
+
 }
