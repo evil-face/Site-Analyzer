@@ -26,7 +26,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.23.1")
     testImplementation("io.ebean:ebean-test:13.15.0")
-    testImplementation("com.konghq:unirest-java:3.11.09")
 
     implementation("io.javalin:javalin:5.5.0")
     implementation("io.javalin:javalin-rendering:5.5.0")
@@ -44,6 +43,9 @@ dependencies {
     annotationProcessor("io.ebean:querybean-generator:13.15.0")
     implementation("org.glassfish.jaxb:jaxb-runtime:2.3.5")
     implementation("javax.activation:activation:1.1.1")
+    implementation("com.konghq:unirest-java:3.11.09")
+    implementation("org.jsoup:jsoup:1.15.3")
+
 
     implementation("com.h2database:h2:2.1.214")
     implementation("org.postgresql:postgresql:42.6.0")
