@@ -69,13 +69,14 @@
                         </tr>
                         </thead>
                         <tbody class="table-group-divider">
-                        <tr th:each="url : ${urls}">
-                            <th scope="row" th:text="${url.id}" class="ps-5"></th>
-                            <td><a class="link-light" th:href="@{/urls/{url_id}(url_id=*{url.id})}"
-                                   th:text="${url.name}"></a></td>
-                            <td th:text="${#temporals.format(url.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
-                            <td>Временная заглушка</td>
-                        </tr>
+                            <tr th:each="check : ${checks}">
+                                <th scope="row" th:text="${check.id}" class="ps-5"></th>
+                                <td th:text="${check.statusCode}"></td>
+                                <td th:text="${check.title}"></td>
+                                <td th:text="${check.h1}"></td>
+                                <td th:text="${check.description}"></td>
+                                <td th:text="${#temporals.format(check.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
