@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.controllers.UrlChecksController;
 import hexlet.code.controllers.UrlController;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -9,6 +10,7 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import static io.javalin.apibuilder.ApiBuilder.crud;
+import static io.javalin.apibuilder.ApiBuilder.post;
 
 public class App {
 
@@ -43,7 +45,10 @@ public class App {
 
     private static void addRoutes(Javalin app) {
         app.get("/", ctx -> ctx.render("index.html"));
-        app.routes(() -> crud("urls/{url-id}", new UrlController()));
+        app.routes(() -> {
+            post("urls/{url-id}/checks", UrlChecksController.createCheck);
+            crud("urls/{url-id}", new UrlController());
+        });
     }
 
     public static Javalin getApp() {
