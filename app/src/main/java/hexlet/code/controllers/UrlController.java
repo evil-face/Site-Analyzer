@@ -103,7 +103,8 @@ public final class UrlController implements CrudHandler {
     private static Url getNormalisedUrl(URL url) {
         String normalisedUrl = url.toString();
 
-        normalisedUrl = normalisedUrl.replace(url.getPath(), "");
+        normalisedUrl = normalisedUrl.substring(0, normalisedUrl.length() - url.getPath().length());
+
         if (normalisedUrl.startsWith("http://www.")
                 || normalisedUrl.startsWith("https://www.")) {
             normalisedUrl = normalisedUrl.replace("www.", "");
