@@ -7,6 +7,8 @@ import io.ebean.Transaction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.time.Instant;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public final class UrlTest {
@@ -31,5 +33,6 @@ public final class UrlTest {
         assertThat(actual.getName()).isEqualTo(expected.getName());
         assertThat(actual.getId()).isGreaterThan(0);
         assertThat(actual.getCreatedAt()).isNotNull();
+        assertThat(actual.getCreatedAt()).isBefore(Instant.now());
     }
 }
