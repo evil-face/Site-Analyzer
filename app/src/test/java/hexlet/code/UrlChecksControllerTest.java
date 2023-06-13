@@ -52,7 +52,6 @@ public final class UrlChecksControllerTest {
 
             String redirectedPath = response.getHeaders().getFirst("Location");
             HttpResponse<String> finalResponse = Unirest.get(redirectedPath).asString();
-            assertThat(finalResponse.getStatus()).isEqualTo(HttpStatus.OK.getCode());
 
             UrlCheck actual = new QUrlCheck().url.eq(expected).findOne();
 
@@ -63,8 +62,10 @@ public final class UrlChecksControllerTest {
 
             assertThat(finalResponse.getStatus()).isEqualTo(HttpStatus.OK.getCode());
             assertThat(finalResponse.getBody())
-                    .contains(actual.getH1(), actual.getTitle())
+                    .contains(actual.getH1(), actual.getTitle(), "Проверка запущена")
                     .doesNotContain("Wrong text", "Test text");
+
+            expected.delete();
         }
     }
 
