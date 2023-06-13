@@ -169,10 +169,9 @@ public final class UrlControllerTest {
 
     @Test
     void testCreateExistingEntity() {
-        String userInput = secondPageExistingUrl;
         List<Url> listBefore = new QUrl().findList();
         HttpResponse<String> response = Unirest.post("/urls")
-                .field("url", userInput)
+                .field("url", secondPageExistingUrl)
                 .asString();
         List<Url> listAfter = new QUrl().findList();
 
