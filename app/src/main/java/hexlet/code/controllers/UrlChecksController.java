@@ -49,7 +49,7 @@ public class UrlChecksController {
         newCheck.setDescription(description);
         newCheck.save();
 
-        ctx.sessionAttribute("flash", "Проверка запущена");
+        ctx.sessionAttribute("flash", "Страница успешно проверена");
         ctx.redirect("/urls/" + urlId);
     };
 }
