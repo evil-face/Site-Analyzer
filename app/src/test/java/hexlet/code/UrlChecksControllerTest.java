@@ -62,7 +62,7 @@ public final class UrlChecksControllerTest {
 
             assertThat(finalResponse.getStatus()).isEqualTo(HttpStatus.OK.getCode());
             assertThat(finalResponse.getBody())
-                    .contains(actual.getH1(), actual.getTitle(), "Проверка запущена")
+                    .contains(actual.getH1(), actual.getTitle(), "Страница успешно проверена")
                     .doesNotContain("Wrong text", "Test text");
 
             expected.delete();
