@@ -26,6 +26,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.23.1")
     testImplementation("io.ebean:ebean-test:13.15.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
 
     implementation("io.javalin:javalin:5.5.0")
     implementation("io.javalin:javalin-rendering:5.5.0")
