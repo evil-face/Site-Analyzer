@@ -128,8 +128,7 @@ public final class UrlControllerTest {
         assertThat(actual).isNotNull();
         assertThat(response1.getBody()).contains("Страница успешно добавлена");
 
-        HttpResponse<String> response = Unirest.get("/urls?page=2")
-                .asString();
+        HttpResponse<String> response = Unirest.get("/urls?page=2").asString();
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(response.getBody()).contains(
                 String.valueOf(actual.getId()),
