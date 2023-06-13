@@ -57,6 +57,9 @@
                                     style="background-color: #25ae88;">Запустить проверку</button>
                         </form>
                     </div>
+                    <div th:if="${session.flash}">
+                        <span class="text-warning" th:text="${session.flash}"></span>
+                    </div>
                     <table class="table table-hover table-dark">
                         <thead>
                         <tr>
