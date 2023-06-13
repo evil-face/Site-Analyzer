@@ -92,6 +92,7 @@ public final class UrlController implements CrudHandler {
         ctx.attribute("checks", checks);
         ctx.attribute("url", url);
         ctx.render("url.html");
+        ctx.consumeSessionAttribute("flash");
     }
 
     @Override
