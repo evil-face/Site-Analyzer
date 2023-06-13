@@ -30,12 +30,15 @@ public class UrlChecksController {
         String title = doc.title();
         Element h1tag =  doc.select("h1").first();
         String h1 = h1tag == null ? "" : h1tag.text();
+        Element descriptionTag = doc.select("meta[name='description']").first();
+        String description = descriptionTag == null ? "" : descriptionTag.attr("content");
 
         UrlCheck newCheck = new UrlCheck();
         newCheck.setUrl(url);
         newCheck.setStatusCode((short) response.getStatus());
         newCheck.setTitle(title);
         newCheck.setH1(h1);
+        newCheck.setDescription(description);
         newCheck.save();
 
         ctx.redirect("/urls/" + urlId);
