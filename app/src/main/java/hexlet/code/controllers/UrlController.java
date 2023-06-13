@@ -42,10 +42,8 @@ public final class UrlController implements CrudHandler {
                 ctx.attribute("url", userInput);
             } else {
                 newUrl.save();
-                ctx.status(HttpStatus.CREATED);
                 ctx.sessionAttribute("flash", "Страница успешно добавлена");
-                getAll(ctx);
-                ctx.consumeSessionAttribute("flash");
+                ctx.redirect("/urls");
                 return;
             }
         }
@@ -73,6 +71,7 @@ public final class UrlController implements CrudHandler {
         List<Url> list = pagedUrls.getList();
         ctx.attribute("urls", list);
         ctx.render("urls.html");
+        ctx.consumeSessionAttribute("flash");
     }
 
     @Override
