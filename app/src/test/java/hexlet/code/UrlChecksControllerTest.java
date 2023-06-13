@@ -70,7 +70,7 @@ public final class UrlChecksControllerTest {
     }
 
     @Test
-    void createCheckUrlNotFound() {
+    void createCheckUrlNotFoundInDB() {
         HttpResponse<String> response = Unirest.post("/urls/" + 12345 + "/checks")
                 .asString();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.getCode());
