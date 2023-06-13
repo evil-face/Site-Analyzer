@@ -23,7 +23,15 @@ public class UrlChecksController {
             return;
         }
 
-        HttpResponse<String> response = Unirest.get(url.getName()).asString();
+        HttpResponse<String> response = null;
+        try {
+            response = Unirest.get(url.getName()).asString();
+        } catch (Exception e) {
+            ctx.sessionAttribute("flash", "Сайт не существует");
+            ctx.redirect("/urls/" + urlId);
+            return;
+        }
+
         String html = response.getBody();
         Document doc = Jsoup.parse(html);
 
@@ -41,6 +49,7 @@ public class UrlChecksController {
         newCheck.setDescription(description);
         newCheck.save();
 
+        ctx.sessionAttribute("flash", "Проверка запущена");
         ctx.redirect("/urls/" + urlId);
     };
 }
