@@ -76,6 +76,27 @@ public final class UrlChecksControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.getCode());
     }
 
+    @Test
+    void createCheckUrlDoesNotExist() throws IOException {
+        Url expected = new Url();
+        expected.save();
+        long expectedId = expected.getId();
+        expected.setName("http://notfound.ru");
+        expected.save();
+
+        HttpResponse<String> response = Unirest.post("/urls/" + expectedId + "/checks")
+                .asString();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.FOUND.getCode());
+
+        String redirectedPath = response.getHeaders().getFirst("Location");
+        HttpResponse<String> finalResponse = Unirest.get(redirectedPath).asString();
+        assertThat(finalResponse.getStatus()).isEqualTo(HttpStatus.OK.getCode());
+
+        assertThat(finalResponse.getBody())
+                .contains("Сайт не существует");
+
+    }
+
     private String readTestFixture() throws IOException {
         Path path = Paths.get("src/test/resources/test.html").toAbsolutePath().normalize();
         if (!Files.exists(path)) {
