@@ -6,3 +6,16 @@
 
 HTTP page analyzer
 -----------
+Deployed at https://site-analyzer.up.railway.app/
+
+Add any site to the watchlist and run checks to get its actual status.
+
+**Features**
+- URL cleanup
+- Run a check to get some basic info: response status code, `title`, `description` and `h1` tags.  
+- Store the list of added sites and get the last check results at a glance
+- Store the checks history for every added site
+
+**Looks like this:**
+
+![Example](https://github.com/evil-face/java-project-72/blob/main/.github/workflows/analyzer_screenshot.png?raw=true "icon")
