@@ -9,6 +9,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.crud;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
@@ -46,6 +47,7 @@ public class App {
     private static void addRoutes(Javalin app) {
         app.get("/", ctx -> ctx.render("index.html"));
         app.routes(() -> {
+            get("urls/{url-id}/update", UrlController.updateUrl);
             post("urls/{url-id}/checks", UrlChecksController.createCheck);
             crud("urls/{url-id}", new UrlController());
         });
