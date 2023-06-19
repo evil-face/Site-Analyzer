@@ -19,23 +19,21 @@ public final class UrlController implements CrudHandler {
     @Override
     public void create(@NotNull Context ctx) {
         String userInput = ctx.formParam("url");
-        Url newUrl = null;
+        URL url = null;
 
         try {
-            if (userInput == null || userInput.isBlank()) {
-                throw new MalformedURLException();
-            }
-            URL url = new URL(userInput);
-            newUrl = getNormalisedUrl(url);
+            url = new URL(userInput);
         } catch (MalformedURLException e) {
             ctx.status(HttpStatus.BAD_REQUEST);
             ctx.sessionAttribute("flash", "Некорректный URL. Не забудьте указать \"http\" или \"https\"");
             ctx.attribute("url", userInput);
+            ctx.render("index.html");
+            ctx.consumeSessionAttribute("flash");
+            return;
         }
 
-
-        if (newUrl != null) {
-            Optional<Url> existingUrl = new QUrl().name.eq(newUrl.getName()).findOneOrEmpty();
+        Url newUrl = getNormalisedUrl(url);
+        Optional<Url> existingUrl = new QUrl().name.eq(newUrl.getName()).findOneOrEmpty();
 
             if (existingUrl.isPresent()) {
                 ctx.sessionAttribute("flash", "Страница уже существует");
