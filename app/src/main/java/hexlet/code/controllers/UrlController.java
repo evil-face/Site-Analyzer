@@ -69,7 +69,20 @@ public final class UrlController implements CrudHandler {
 
     @Override
     public void delete(@NotNull Context ctx, @NotNull String urlID) {
+        if (!urlID.matches("\\d+")) {
+            ctx.status(HttpStatus.BAD_REQUEST).result("String ID must be numeric");
+            return;
+        }
 
+        Url url = new QUrl().id.eq(Integer.parseInt(urlID)).findOne();
+        if (url == null) {
+            ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
+            return;
+        }
+
+        url.delete();
+        ctx.sessionAttribute("flash", "Страница успешно удалена");
+        ctx.redirect("/urls");
     }
 
     @Override
