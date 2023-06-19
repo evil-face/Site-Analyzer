@@ -98,9 +98,7 @@ public final class UrlController implements CrudHandler {
 
     @NotNull
     private static Url getNormalisedUrl(URL url) {
-        String normalisedUrl = url.toString();
-
-        normalisedUrl = normalisedUrl.substring(0, normalisedUrl.length() - url.getPath().length());
+        String normalisedUrl = url.getProtocol() + "://" + url.getAuthority();
 
         if (normalisedUrl.startsWith("http://www.")
                 || normalisedUrl.startsWith("https://www.")) {
