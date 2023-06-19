@@ -99,9 +99,10 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a class="btn btn-danger mb-2" th:href="@{/urls/{id}/update(id=${url.id})}"
-                       role="button">Редактировать</a>
-                    <button class="btn btn-danger mb-2 mx-2" th:onclick="confirmDelete(event)">Удалить сайт</button>
+                    <a class="btn mb-2 text-black" style="background-color: #25ae88;"
+                       th:href="@{/urls/{id}/update(id=${url.id})}" role="button">Редактировать</a>
+                    <button class="btn btn-danger mb-2 mx-2 text-black"
+                            th:onclick="confirmDelete(event)">Удалить сайт</button>
                 </div>
             </div>
         </section>
