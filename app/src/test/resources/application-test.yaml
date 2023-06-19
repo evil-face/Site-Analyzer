@@ -1,8 +1,8 @@
 ebean:
   test:
-    useDocker: false  # DO NOT USE DOCKER
-    platform: h2 # h2, postgres, mysql, oracle, sqlserver
-    ddlMode: dropCreate # none | dropCreate | migrations | create
+    useDocker: false
+    platform: h2
+    ddlMode: dropCreate
     dbName: test_db
     h2:
       username: ""
