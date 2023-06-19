@@ -35,6 +35,7 @@ dependencies {
     implementation("com.github.zhanhb:thymeleaf-layout-dialect:3.2.0")
     implementation("org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE")
     implementation("org.webjars:bootstrap:5.2.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
 
     implementation("io.ebean:ebean:13.15.0")
     implementation("io.ebean:ebean-ddl-generator:13.15.0")
