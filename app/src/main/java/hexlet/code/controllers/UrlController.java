@@ -35,18 +35,17 @@ public final class UrlController implements CrudHandler {
         Url newUrl = getNormalisedUrl(url);
         Optional<Url> existingUrl = new QUrl().name.eq(newUrl.getName()).findOneOrEmpty();
 
-            if (existingUrl.isPresent()) {
-                ctx.sessionAttribute("flash", "Страница уже существует");
-                ctx.attribute("url", userInput);
-            } else {
-                newUrl.save();
-                ctx.sessionAttribute("flash", "Страница успешно добавлена");
-                ctx.redirect("/urls");
-                return;
-            }
+        if (existingUrl.isPresent()) {
+            ctx.sessionAttribute("flash", "Страница уже существует");
+            ctx.attribute("url", userInput);
+            ctx.render("index.html");
+            ctx.consumeSessionAttribute("flash");
+            return;
         }
 
-        ctx.render("index.html");
+        newUrl.save();
+        ctx.sessionAttribute("flash", "Страница успешно добавлена");
+        getAll(ctx);
         ctx.consumeSessionAttribute("flash");
     }
 
