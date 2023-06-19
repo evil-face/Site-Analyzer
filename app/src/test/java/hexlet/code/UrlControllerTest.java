@@ -119,14 +119,17 @@ public final class UrlControllerTest {
     @Test
     void testCreateCorrect() {
         String userInput = "http://www.uniquesite.com/path";
-        HttpResponse<String> response = Unirest.post("/urls")
+        HttpResponse<String> response1 = Unirest.post("/urls")
                 .field("url", userInput)
                 .asString();
         Url actual = new QUrl().name.eq("http://uniquesite.com").findOne();
 
         assertThat(actual).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.FOUND.getCode());
-        assertThat(response.getBody()).contains("Страница успешно добавлена");
+        assertThat(response1.getStatus()).isEqualTo(HttpStatus.FOUND.getCode());
+
+        String redirectedPath = response1.getHeaders().getFirst("Location");
+        HttpResponse<String> afterRedirect = Unirest.get(redirectedPath).asString();
+        assertThat(afterRedirect.getBody()).contains("Страница успешно добавлена");
 
         HttpResponse<String> response2 = Unirest.get("/urls?page=2").asString();
         assertThat(response2.getStatus()).isEqualTo(200);
