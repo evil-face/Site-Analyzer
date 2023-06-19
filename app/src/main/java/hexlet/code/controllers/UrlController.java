@@ -6,6 +6,7 @@ import hexlet.code.domain.query.QUrl;
 import io.ebean.PagedList;
 import io.javalin.apibuilder.CrudHandler;
 import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,6 +17,24 @@ import java.util.Optional;
 
 
 public final class UrlController implements CrudHandler {
+    public static Handler updateUrl = ctx -> {
+        String urlID = ctx.pathParam("url-id");
+
+        if (!urlID.matches("\\d+")) {
+            ctx.status(HttpStatus.BAD_REQUEST).result("String ID must be numeric");
+            return;
+        }
+
+        Url url = new QUrl().id.eq(Integer.parseInt(urlID)).findOne();
+        if (url == null) {
+            ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
+            return;
+        }
+
+        ctx.attribute("url", url);
+        ctx.render("update.html");
+    };
+
     @Override
     public void create(@NotNull Context ctx) {
         String userInput = ctx.formParam("url");
@@ -92,7 +111,36 @@ public final class UrlController implements CrudHandler {
 
     @Override
     public void update(@NotNull Context ctx, @NotNull String urlID) {
+        if (!urlID.matches("\\d+")) {
+            ctx.status(HttpStatus.BAD_REQUEST).result("String ID must be numeric");
+            return;
+        }
 
+        Url oldUrl = new QUrl().id.eq(Integer.parseInt(urlID)).findOne();
+        if (oldUrl == null) {
+            ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
+            return;
+        }
+
+        Url updatedUrl = ctx.bodyAsClass(Url.class);
+        URL updatedRaw = null;
+
+        try {
+            updatedRaw = new URL(updatedUrl.getName());
+        } catch (MalformedURLException e) {
+            ctx.status(HttpStatus.BAD_REQUEST);
+            ctx.sessionAttribute("flash", "Некорректный URL. Не забудьте указать \"http\" или \"https\"");
+            ctx.attribute("url", updatedUrl.getName());
+            ctx.render("update.html");
+            ctx.consumeSessionAttribute("flash");
+            return;
+        }
+
+        oldUrl.setName(getNormalisedUrl(updatedRaw).getName());
+        oldUrl.save();
+
+        ctx.sessionAttribute("flash", "Страница успешно обновлена");
+        ctx.redirect("/urls");
     }
 
     @NotNull
