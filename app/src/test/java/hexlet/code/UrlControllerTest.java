@@ -125,7 +125,7 @@ public final class UrlControllerTest {
         Url actual = new QUrl().name.eq("http://uniquesite.com").findOne();
 
         assertThat(actual).isNotNull();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.getCode());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.FOUND.getCode());
         assertThat(response.getBody()).contains("Страница успешно добавлена");
 
         HttpResponse<String> response2 = Unirest.get("/urls?page=2").asString();

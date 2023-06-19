@@ -45,6 +45,7 @@ public final class UrlController implements CrudHandler {
 
         newUrl.save();
         ctx.sessionAttribute("flash", "Страница успешно добавлена");
+        ctx.status(HttpStatus.FOUND);
         getAll(ctx);
         ctx.consumeSessionAttribute("flash");
     }
