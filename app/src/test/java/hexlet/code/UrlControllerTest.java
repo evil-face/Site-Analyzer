@@ -182,4 +182,55 @@ public final class UrlControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.getCode());
         assertThat(response.getBody()).contains("Страница уже существует");
     }
+
+    @Test
+    void testDeleteCorrect() {
+        List<Url> expectedList = new QUrl().findList();
+
+        Url deleteCandidate = new Url();
+        deleteCandidate.save();
+        long deleteCandidateId = deleteCandidate.getId();
+        deleteCandidate.setName("http://gonnadelete.com");
+        deleteCandidate.save();
+        transaction.commit();
+
+        HttpResponse<String> response = Unirest.delete("/urls/" + deleteCandidateId).asString();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.FOUND.getCode());
+
+        List<Url> actualList = new QUrl().findList();
+        assertThat(actualList).hasSameSizeAs(expectedList);
+    }
+
+    @Test
+    void testDeleteIncorrect() {
+        String expected = "String ID must be numeric";
+        HttpResponse<String> response = Unirest.delete("/urls/badreq").asString();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.getCode());
+        assertThat(response.getBody()).isEqualTo(expected);
+    }
+
+    @Test
+    void testUpdateCorrect() {
+        Url oldUrl = new Url("http://oldname.com");
+        oldUrl.save();
+        transaction.commit();
+
+        String updatedAddress = "http://updated.com";
+
+        HttpResponse<String> response1 = Unirest.patch("/urls/" + oldUrl.getId())
+                .body("{\"name\": \"" + updatedAddress + "\"}")
+                .asString();
+
+
+        Url actual = new QUrl().id.eq(oldUrl.getId()).findOne();
+
+        assertThat(response1.getStatus()).isEqualTo(HttpStatus.FOUND.getCode());
+        assertThat(new QUrl().name.eq("http://oldname.com").findOne()).isNull();
+        assertThat(actual.getName()).isEqualTo(updatedAddress);
+
+        String redirectedPath = response1.getHeaders().getFirst("Location");
+        HttpResponse<String> afterRedirect = Unirest.get(redirectedPath).asString();
+        assertThat(afterRedirect.getBody()).contains("Страница успешно обновлена");
+    }
 }
