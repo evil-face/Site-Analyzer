@@ -9,6 +9,7 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,17 +18,15 @@ import java.util.Optional;
 
 
 public final class UrlController implements CrudHandler {
-    public static Handler updateUrl = ctx -> {
+    public static Handler showUrlEditPage = ctx -> {
         String urlID = ctx.pathParam("url-id");
 
-        if (!urlID.matches("\\d+")) {
-            ctx.status(HttpStatus.BAD_REQUEST).result("String ID must be numeric");
+        if (!isIdNumeric(ctx, urlID)) {
             return;
         }
 
-        Url url = new QUrl().id.eq(Integer.parseInt(urlID)).findOne();
-        if (url == null) {
-            ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
+        Url url = getUrlById(urlID);
+        if (isUrlNull(ctx, url)) {
             return;
         }
 
@@ -47,18 +46,16 @@ public final class UrlController implements CrudHandler {
             ctx.sessionAttribute("flash", "Некорректный URL. Не забудьте указать \"http\" или \"https\"");
             ctx.attribute("url", userInput);
             ctx.render("index.html");
-            ctx.consumeSessionAttribute("flash");
             return;
         }
 
         Url newUrl = getNormalisedUrl(url);
-        Optional<Url> existingUrl = new QUrl().name.eq(newUrl.getName()).findOneOrEmpty();
+        Optional<Url> existingUrl = getUrlByName(newUrl);
 
         if (existingUrl.isPresent()) {
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.attribute("url", userInput);
             ctx.render("index.html");
-            ctx.consumeSessionAttribute("flash");
             return;
         }
 
@@ -69,14 +66,12 @@ public final class UrlController implements CrudHandler {
 
     @Override
     public void delete(@NotNull Context ctx, @NotNull String urlID) {
-        if (!urlID.matches("\\d+")) {
-            ctx.status(HttpStatus.BAD_REQUEST).result("String ID must be numeric");
+        if (!isIdNumeric(ctx, urlID)) {
             return;
         }
 
-        Url url = new QUrl().id.eq(Integer.parseInt(urlID)).findOne();
-        if (url == null) {
-            ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
+        Url url = getUrlById(urlID);
+        if (isUrlNull(ctx, url)) {
             return;
         }
 
@@ -92,26 +87,20 @@ public final class UrlController implements CrudHandler {
         int pageNum = pageQuery == null ? 1 : Integer.parseInt(pageQuery);
         ctx.attribute("pageNum", pageNum);
 
-        PagedList<Url> pagedUrls = new QUrl()
-                .setFirstRow((pageNum - 1) * urlsPerPage)
-                .setMaxRows(urlsPerPage)
-                .findPagedList();
+        PagedList<Url> pagedUrls = getPagedList(urlsPerPage, pageNum);
         List<Url> list = pagedUrls.getList();
         ctx.attribute("urls", list);
         ctx.render("urls.html");
-        ctx.consumeSessionAttribute("flash");
     }
 
     @Override
     public void getOne(@NotNull Context ctx, @NotNull String urlID) {
-        if (!urlID.matches("\\d+")) {
-            ctx.status(HttpStatus.BAD_REQUEST).result("String ID must be numeric");
+        if (!isIdNumeric(ctx, urlID)) {
             return;
         }
 
-        Url url = new QUrl().id.eq(Integer.parseInt(urlID)).findOne();
-        if (url == null) {
-            ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
+        Url url = getUrlById(urlID);
+        if (isUrlNull(ctx, url)) {
             return;
         }
         List<UrlCheck> checks = url.getUrlChecks();
@@ -119,19 +108,16 @@ public final class UrlController implements CrudHandler {
         ctx.attribute("checks", checks);
         ctx.attribute("url", url);
         ctx.render("url.html");
-        ctx.consumeSessionAttribute("flash");
     }
 
     @Override
     public void update(@NotNull Context ctx, @NotNull String urlID) {
-        if (!urlID.matches("\\d+")) {
-            ctx.status(HttpStatus.BAD_REQUEST).result("String ID must be numeric");
+        if (!isIdNumeric(ctx, urlID)) {
             return;
         }
 
-        Url oldUrl = new QUrl().id.eq(Integer.parseInt(urlID)).findOne();
-        if (oldUrl == null) {
-            ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
+        Url oldUrl = getUrlById(urlID);
+        if (isUrlNull(ctx, oldUrl)) {
             return;
         }
 
@@ -155,6 +141,24 @@ public final class UrlController implements CrudHandler {
         ctx.redirect("/urls");
     }
 
+    @Nullable
+    private static Url getUrlById(@NotNull String urlID) {
+        return new QUrl().id.eq(Integer.parseInt(urlID)).findOne();
+    }
+
+    @NotNull
+    private static Optional<Url> getUrlByName(Url newUrl) {
+        return new QUrl().name.eq(newUrl.getName()).findOneOrEmpty();
+    }
+
+    @NotNull
+    private static PagedList<Url> getPagedList(int urlsPerPage, int pageNum) {
+        return new QUrl()
+                .setFirstRow((pageNum - 1) * urlsPerPage)
+                .setMaxRows(urlsPerPage)
+                .findPagedList();
+    }
+
     @NotNull
     private static Url getNormalisedUrl(URL url) {
         String normalisedUrl = url.getProtocol() + "://" + url.getAuthority();
@@ -165,5 +169,23 @@ public final class UrlController implements CrudHandler {
         }
 
         return new Url(normalisedUrl);
+    }
+
+    private static boolean isIdNumeric(Context ctx, String id) {
+        if (id.matches("\\d+")) {
+            return true;
+        } else {
+            ctx.status(HttpStatus.BAD_REQUEST).result("String ID must be numeric");
+            return false;
+        }
+    }
+
+    private static boolean isUrlNull(Context ctx, Url url) {
+        if (url == null) {
+            ctx.status(HttpStatus.NOT_FOUND).result("Not Found");
+            return true;
+        } else {
+            return false;
+        }
     }
 }
