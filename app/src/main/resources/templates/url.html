@@ -13,7 +13,11 @@
     <body class="bg-dark">
         <section layout:fragment="content">
             <div class="container-lg mt-3">
-                <h1 class="text-white display-5 mb-0" th:text="'Cайт ' + ${url.name}"></h1>
+                <div class="d-sm-flex align-items-center">
+                    <h1 class="text-white display-5 mb-0" th:text="'Cайт ' + ${url.name}"></h1>
+                    <a class="btn text-black mx-3" style="background-color: #25ae88;"
+                       th:href="@{/urls/{id}/edit(id=${url.id})}" role="button">Редактировать</a>
+                </div>
                 <div class="row mt-3">
                     <div class="col-6">
                         <ul class="list-group list-group-horizontal-sm">
