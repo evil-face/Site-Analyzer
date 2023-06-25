@@ -4,33 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="'Проверка сайта ' + ${url.name}"></title>
-        <style>
-        .flex-even {
-          flex: 1;
-        }
-        </style>
-        <script th:inline="javascript">
-        function confirmUpdate() {
-            var updatedUrl = document.getElementById("updatedUrl").value;
-            var url = '/urls/' + [[${url.id}]];
-
-            if (confirm("Вы уверены, что хотите обновить сайт в списке?")) {
-                fetch(url, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name: updatedUrl
-                    })
-                }).then(response => {
-                    if (response.redirected) {
-                        window.location.href = response.url;
-                    }
-                });
+    <style>
+    .flex-even {
+      flex: 1;
+    }
+    </style>
+    <script th:inline="javascript">
+    function confirmUpdate() {
+        var updatedUrl = document.getElementById("updatedUrl").value;
+        var url = '/urls/' + [[${url.id}]];
+        fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: updatedUrl
+            })
+        }).then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
             }
-        }
-        </script>
+        });
+    }
+    </script>
 </head>
 <body class="bg-dark">
 <section layout:fragment="content">
