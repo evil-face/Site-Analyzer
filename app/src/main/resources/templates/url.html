@@ -75,7 +75,7 @@
                         </form>
                     </div>
                     <div th:if="${session.flash}">
-                        <span class="text-warning" th:text="${session.flash}"></span>
+                        <span class="text-warning" th:text="${ctx.consumeSessionAttribute('flash')}"></span>
                     </div>
                     <table class="table table-hover table-dark">
                         <thead>

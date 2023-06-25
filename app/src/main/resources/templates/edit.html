@@ -65,7 +65,7 @@
         </div>
         <div class="mt-3">
             <div th:if="${session.flash}">
-                <span class="text-warning" th:text="${session.flash}"></span>
+                <span class="text-warning" th:text="${ctx.consumeSessionAttribute('flash')}"></span>
             </div>
         </div>
     </div>
