@@ -2,15 +2,11 @@ package hexlet.code;
 
 import hexlet.code.domain.Url;
 import hexlet.code.domain.query.QUrl;
-import io.ebean.DB;
-import io.ebean.Transaction;
 import io.javalin.Javalin;
 import io.javalin.http.HttpStatus;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -20,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public final class UrlControllerTest {
-    private Transaction transaction;
     private final String firstPageExistingUrl = "http://yandex.ru";
     private final String secondPageExistingUrl = "http://secondpage.org";
 
@@ -30,16 +25,6 @@ public final class UrlControllerTest {
         app.start(0);
         int port = app.port();
         Unirest.config().defaultBaseUrl("http://localhost:" + port);
-    }
-
-    @BeforeEach
-    void setUp() {
-        transaction = DB.beginTransaction();
-    }
-
-    @AfterEach
-    void tearDown() {
-        transaction.rollback();
     }
 
     @Test
@@ -136,6 +121,8 @@ public final class UrlControllerTest {
         assertThat(response2.getBody()).contains(
                 String.valueOf(actual.getId()),
                 actual.getName());
+
+        actual.delete();
     }
 
     @Test
@@ -192,7 +179,6 @@ public final class UrlControllerTest {
         long deleteCandidateId = deleteCandidate.getId();
         deleteCandidate.setName("http://gonnadelete.com");
         deleteCandidate.save();
-        transaction.commit();
 
         HttpResponse<String> response = Unirest.delete("/urls/" + deleteCandidateId).asString();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.FOUND.getCode());
@@ -214,7 +200,6 @@ public final class UrlControllerTest {
     void testUpdateCorrect() {
         Url oldUrl = new Url("http://oldname.com");
         oldUrl.save();
-        transaction.commit();
 
         String updatedAddress = "http://updated.com";
 
@@ -232,5 +217,7 @@ public final class UrlControllerTest {
         String redirectedPath = response1.getHeaders().getFirst("Location");
         HttpResponse<String> afterRedirect = Unirest.get(redirectedPath).asString();
         assertThat(afterRedirect.getBody()).contains("Страница успешно обновлена");
+
+        oldUrl.delete();
     }
 }
