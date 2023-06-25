@@ -11,6 +11,21 @@
                 color: white;
             }
         </style>
+        <script th:inline="javascript">
+            function confirmDelete(event, urlId) {
+                event.preventDefault();
+                var url = '/urls/' + urlId;
+                if (confirm("Вы уверены, что хотите удалить сайт из списка?")) {
+                    fetch(url, {
+                    method: 'DELETE'
+                    }).then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    });
+                }
+            }
+        </script>
     </head>
     <body class="bg-dark">
         <section layout:fragment="content">
@@ -24,8 +39,9 @@
                         <tr>
                             <th scope="col" class="ps-5 col-1">ID</th>
                             <th scope="col" class="col-5">Имя</th>
-                            <th scope="col" class="col-2">Последняя проверка</th>
+                            <th scope="col" class="col-3">Последняя проверка</th>
                             <th scope="col" class="col-2">Код ответа</th>
+                            <th scope="col" class="col-1"></th>
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
@@ -42,6 +58,10 @@
                             <td>
                                 <span th:unless="${url.getLastCheck() == null}"
                                       th:text="${url.getLastCheck().statusCode}"></span>
+                            </td>
+                            <td>
+                                <a style="text-decoration: none" class="text-danger fw-bold" title="Удалить сайт"
+                                   href="" th:onclick="'confirmDelete(event, ' + ${url.id} + ') '">✕</a>
                             </td>
                         </tr>
                     </tbody>
