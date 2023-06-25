@@ -47,7 +47,7 @@ public class App {
     private static void addRoutes(Javalin app) {
         app.get("/", ctx -> ctx.render("index.html"));
         app.routes(() -> {
-            get("urls/{url-id}/update", UrlController.updateUrl);
+            get("urls/{url-id}/edit", UrlController.showUrlEditPage);
             post("urls/{url-id}/checks", UrlChecksController.createCheck);
             crud("urls/{url-id}", new UrlController());
         });

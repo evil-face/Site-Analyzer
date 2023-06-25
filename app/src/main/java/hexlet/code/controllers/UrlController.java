@@ -32,7 +32,7 @@ public final class UrlController implements CrudHandler {
         }
 
         ctx.attribute("url", url);
-        ctx.render("update.html");
+        ctx.render("edit.html");
     };
 
     @Override
@@ -143,9 +143,8 @@ public final class UrlController implements CrudHandler {
         } catch (MalformedURLException e) {
             ctx.status(HttpStatus.BAD_REQUEST);
             ctx.sessionAttribute("flash", "Некорректный URL. Не забудьте указать \"http\" или \"https\"");
-            ctx.attribute("url", updatedUrl.getName());
-            ctx.render("update.html");
-            ctx.consumeSessionAttribute("flash");
+            ctx.attribute("url", updatedUrl);
+            ctx.redirect("/urls/" + urlID + "/edit");
             return;
         }
 
